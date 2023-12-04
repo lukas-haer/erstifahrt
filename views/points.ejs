@@ -1,0 +1,99 @@
+<!-- points.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/auth-area.css">
+    <link rel="icon" href="/img/logo_50x50.png" type="image/png">
+    <title>Häuserspiel Punkte</title>
+</head>
+
+<body style="width: 100%;">
+    <div class="container" style=" width: 500px; ">
+        <div class="content">
+            <h1>Vergebene Punkte</h1>
+
+            <h2>Ravenclaw Scores</h2>
+            <div class="scrollable-table-container">
+                <table style="min-width: 400px;">
+                    <thead>
+                        <tr>
+
+                            <th>Punkte</th>
+                            <th>Begründung</th>
+                            <th>Zeitpunkt</th>
+                            <th>Vergeben von</th>
+                            <th>Löschen <span style="font-size : 9px;">(Nur Admins)</span></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% ravenclawScores.forEach(score=> { %>
+                            <tr>
+
+                                <td>
+                                    <%= score.pointsAwarded %>
+                                </td>
+                                <td>
+                                    <%= score.reasoning %>
+                                </td>
+                                <td>
+                                    <%= score.createdAt %>
+                                </td>
+                                <td>
+                                    <%= score.madeBy %>
+                                </td>
+                                <td style="text-align: center;">
+                                    <a href="/teamer/points/delete?id=<%=score._id%>">X</a>
+                                </td>
+                            </tr>
+                            <% }); %>
+                    </tbody>
+                </table>
+            </div>
+            <h2>Hufflepuff Scores</h2>
+            <div class="scrollable-table-container">
+                <table>
+                    <thead>
+                        <tr>
+
+                            <th>Punkte</th>
+                            <th>Begründung</th>
+                            <th>Zeitpunkt</th>
+                            <th>Vergeben von</th>
+                            <th>Löschen <span style="font-size : 9px;">(Nur Admins)</span></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% hufflepuffScores.forEach(score=> { %>
+                            <tr>
+
+                                <td>
+                                    <%= score.pointsAwarded %>
+                                </td>
+                                <td>
+                                    <%= score.reasoning %>
+                                </td>
+                                <td>
+                                    <%= score.createdAt %>
+                                </td>
+                                <td>
+                                    <%= score.madeBy %>
+                                </td>
+                                <td style="text-align: center;">
+                                    <a href="/teamer/points/delete?id=<%=score._id%>">X</a>
+                                </td>
+                            </tr>
+                            <% }); %>
+                    </tbody>
+                </table>
+            </div>
+            <p><a href="/">Startseite</a>    <a href="/teamer/">   Teamer-Bereich</a> </p>
+        </div>
+    </div>
+
+
+</body>
+
+</html>

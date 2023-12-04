@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/admin-area.css">
+    <link rel="icon" href="/img/logo_50x50.png" type="image/png">
+    <title>Adminbereich</title>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="content">
+            <div>
+                <h1>Register</h1>
+                <form action="/teamer/admin" method="POST">
+
+                    <div>
+                        <!--<label for="name">Name</label>-->
+                        <input type="text" id="name" name="name" required placeholder="username">
+                    </div>
+                    <div>
+                        <!--<label for="password">Password</label>-->
+                        <input type="password" id="password" name="password" required placeholder="password">
+                    </div>
+                    <div style="text-align: center;">
+                        Rolle:
+                        <select name="role" id="role">
+                            <option value="Standard">Standard</option>
+                            <option value="Admin">Admin</option>
+                        </select>
+                    </div>
+                    <div class="basic">
+
+                        <button type="submit">Register</button>
+                    </div>
+                </form>
+                <div class="basic">
+                    <%= error %>
+
+                </div>
+                <div class="basic">
+                    <a href="/teamer/">Teamer-Bereich</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="content">
+            <h1>Konten</h1>
+            <% teamer.forEach(teamer=> { %>
+                <p>
+                    <%= teamer.name %> (<%= teamer.role %>)
+                </p>
+
+                <% }); %>
+
+        </div>
+        
+
+    </div>
+    <div class="container">
+        <div class="content" style="text-align: center;">
+            <h1>Konto-Löschen</h1>
+            <form id="deleteAccForm" action="/teamer/admin/delete-account?_method=DELETE" method="POST">
+                <select name="kontoZurLoeschung" id="konto-zur-löschung">
+                    <% teamer.forEach(teamer => { %>
+                        <option value="<%= teamer._id %>"><%= teamer.name %></option>
+                    <% }); %>
+                </select>
+                <button type="button" onclick="confirmDelete('deleteAccForm','Sicher, dass du das Konto löschen möchtest?')">Konto-Löschen</button>
+            </form>
+
+            <br>
+
+            <h1>Strikes löschen</h1>
+            <form id="deleteStrikeForm" action="/teamer/admin/delete-strikes?_method=DELETE" method="POST">
+                <button type="button" onclick="confirmDelete('deleteStrikeForm','Willst du wirklich alle Strikes löschen?')">Alle Strikes löschen</button>
+            </form>
+        </div>
+    </div>
+    
+    <script>
+        function confirmDelete(FormID, msg) {
+
+            const isConfirmed = confirm(msg);
+    
+            if (isConfirmed) {
+                document.getElementById(FormID).submit();
+            }
+        }
+    </script>
+    
+
+
+
+</body>
+
+</html>

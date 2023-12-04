@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/auth-area.css">
+    <link rel="icon" href="/img/logo_50x50.png" type="image/png">
+    <title>Teamerbereich</title>
+</head>
+
+<body>
+    <div>
+        <div class="container" style="text-align: center;">
+            <div class="content">
+                <h1> Hi <%= name %>
+                </h1>
+                <form action="/teamer/logout?_method=DELETE" method="POST">
+                    <button type="submit">Log Out</button>
+                </form>
+                <br>
+
+                <a href="/teamer/admin">Admin</a>
+                <a href="/">Startseite</a>
+            </div>
+        </div>
+
+        <div class="container" style="text-align: center;">
+            <div class="content" style="text-align: left;">
+                <div class="headline">
+                    <h1>Punkte </h1>
+                    <a href="/teamer/points">Punkte übersicht</a>
+                </div>
+                <div>
+                    <form action="/teamer/points/" method="post">
+                        <label>
+                            <input class="radioField" type="radio" name="haus" value="Ravenclaw" required>
+                            Ravenclaw
+                        </label>
+                        <br>
+                        <label>
+                            <input class="radioField" type="radio" name="haus" value="Hufflepuff" required>
+                            Hufflepuff
+                        </label>
+                        <br>
+                        <input class="numberField" type="number" id="pointsChanged" name="pointsChanged" required
+                            placeholder="Punkte">
+                        <br>
+                        <input type="text" id="reasoning" name="reasoning" required placeholder="Begründung">
+                        <button type="submit">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="content">
+                <h1>Strikes</h1>
+                <div class="scrollable-table-container" style="width: 300px; ">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Strikes</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% strikers.forEach(strike=> { %>
+                            <tr>
+                                <td>
+                                    <%= strike.name %>
+                                </td>
+                                <td>
+                                    <%= strike.strikeNr %>
+                                </td>
+                            </tr>
+                            <% }); %>
+                    </tbody>
+                </table>
+            </div>
+                <br>
+                <h3>Neuer Strike</h3>
+                <form id="addStrikeForm" action="/teamer/strikes" method="post">
+                    <input type="text" id="nameErsti" name="nameErsti" required placeholder="Name des Erstis">
+                    <input type="text" id="reasoningStrike" name="reasoningStrike" placeholder="Begründung (optional)">
+                    <button type="button" onclick="confirmDelete('Sicher, dass du diesen Strike hinzufügen willst?')">Striken</button>
+                </form>
+            </div>
+            <script>
+                function confirmDelete(msg) {
+
+                    const isConfirmed = confirm(msg);
+
+                    if (isConfirmed) {
+                        document.getElementById('addStrikeForm').submit();
+                    }
+                }
+            </script>
+        </div>
+    </div>
+
+</body>
+
+</html>

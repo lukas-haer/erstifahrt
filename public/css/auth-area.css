@@ -1,0 +1,136 @@
+html {
+    padding: 0;
+    margin: 0;
+    font-family: 'Open-sans', sans-serif;
+    border: white;
+
+    background-image: url("/img/login-bg.jpg");
+    background-position: center center, center center;
+    background-size: cover, cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+body {
+    height: 100%;
+}
+
+h1, h2, h3 {
+    color: #880000;
+}
+
+.container {
+    width: 300px;
+    margin: 2em auto;
+    padding: 2em;
+    background-color: #ffffff;
+    border-radius: 0.5em;
+    box-shadow: 2px 3px 7px 2px rgba(0, 0, 0, 0.02);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.basic {
+    text-align: center;
+    margin-top: 10px;
+    max-width: 250px;
+    color: #880000;
+}
+
+input {
+    border: none;
+    margin-bottom: 10px;
+    padding-left: 50px;
+    padding-right: 50px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    border: 1px solid rgb(226, 226, 226);
+    border-radius: 30px;
+    box-shadow: 5px 5px 5px 2px rgba(0, 0, 0, 0.12);
+}
+
+.radioField {
+    border: none;
+    color: #880000;
+
+}
+
+.numberField {
+    padding-left: 30px;
+    padding-right: 30px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    width: 60px;
+}
+
+select {
+    border: none;
+    margin: 10px;
+    padding: 5px;
+    padding-left: 15px;
+    padding-right: 15px;
+    border: 1px solid rgb(226, 226, 226);
+    border-radius: 30px;
+    box-shadow: 5px 5px 5px 2px rgba(0, 0, 0, 0.12);
+}
+
+
+button {
+    padding: 15px;
+    padding-left: 25px;
+    padding-right: 25px;
+    border-radius: 25px;
+    border: 1px solid rgb(97, 0, 0);
+    background-color: #880000;
+    color: white;
+    box-shadow: 5px 5px 5px 2px rgba(0, 0, 0, 0.12);
+}
+
+.headline {
+    display: flex;
+    text-align: left;
+    align-items: center;
+    justify-content: space-between;
+}
+
+table {
+  
+    border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 0.9em;
+    font-family: sans-serif;
+    width: 100%; 
+    border-collapse: collapse;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+.scrollable-table-container {
+    width: 90%; 
+    overflow-x: auto;
+}
+
+table thead tr {
+    background-color: #880000;
+    color: #ffffff;
+    text-align: left;
+}
+
+th, td{
+    padding: 12px 15px;
+}
+
+tbody tr{
+    border-bottom: 1px solid #dddddd;
+}
+
+tbody tr:nth-of-type(even){
+    background-color: #f3f3f3;
+}
+
+tbody tr:last-of-type{
+    border-bottom: 2px solid #880000;;
+}
+
+

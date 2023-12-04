@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/auth-area.css">
+    <link href='https://fonts.googleapis.com/css?family=Open Sans' rel='stylesheet'>
+    <link rel="icon" href="/img/logo_50x50.png" type="image/png">
+    <title>Login</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="content">
+            <h1 style="color: #880000;">Teamer-Login</h1>
+            <form action="/teamer/login" method="POST">
+                <div class="entryfield">
+                    <!--<label for="mail">E-Mail</label><br>-->
+                    <input type="text" id="mail" name="mail" required placeholder="username" >
+                </div>
+                <div class="entryfield">
+                    <!--<label for="password">Password</label><br>-->
+                    <input type="password" id="password" name="password" required placeholder="password" >
+                </div>
+                <div class="basic">
+                    <button type="submit">Login</button>
+                </div>
+            </form>
+            <br>
+            <div class="basic">
+                <% if (messages.error) {%>
+                    <%= messages.error %>
+                        <% } %>
+
+
+            </div>
+            <div class="basic">
+                <a href="/">Zur Startseite</a>
+            </div>
+
+        </div>
+    </div>
+</body>
+
+</html>
