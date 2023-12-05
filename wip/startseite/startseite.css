@@ -29,20 +29,30 @@ body {
     display: flex;
 }
 
+h2{
+    color: #880000;
+}
+
+.timeChanged{
+    color: #880000;
+    text-decoration: line-through;
+}
+
 .logo-container-left {
- 
+
     overflow: hidden;
     text-align: left;
-    margin-right: 20px;
-    margin-left: -20px;
+    margin-right: 7px;
+    margin-left: -5px;
+  
 }
 
 .logo-container-right {
 
     overflow: hidden;
     text-align: right;
-    margin-right: -20px;
-    margin-left: 20px;
+    margin-left: 7px;
+    margin-right: -5px;
 }
 
 .text-container-left{ 
@@ -61,7 +71,35 @@ img{
     max-height: 130px;
 }
 
+footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: 50px;
+    text-align: center; 
+    line-height: 50px; 
+    box-shadow: 0px -5px 5px  #dddddd;
+  }
+
 .content {
-    margin-top: 60px; 
+    
     padding: 20px;
+}
+
+/*Tabelle*/
+.schedule {
+    width: 100%;
+    max-width: 450px;
+    margin: 20px auto;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+    border-collapse: collapse;
+}
+
+.time, .eventDes {
+    padding: 10px;
+    border-bottom: 1px dotted #9e9e9e;
+    
 }

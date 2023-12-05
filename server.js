@@ -41,7 +41,7 @@ app.use(methodOverride('_method'))
 app.use(express.static(__dirname + '/public'));
 
 app.get('/', async (req, res) => {
-    console.log("Anfrage")
+ 
     try {
         const scoreRavenclaw = await calcRavenPoints();
         const scoreHufflepuff = await calcHufflePoints();
@@ -363,4 +363,3 @@ async function calcHufflePoints() {
 
 console.log("Server wird gestartet!")
 app.listen(80)
-console.log("Server ready")
