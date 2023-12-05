@@ -361,4 +361,4 @@ async function calcHufflePoints() {
 
 
 console.log("Server wird gestartet!")
-app.listen(80)
+app.listen(8080)
