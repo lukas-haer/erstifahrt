@@ -19,6 +19,7 @@ body {
     justify-content: space-between;
     height: 100px;
     background: linear-gradient(to right, #034371 10%, #0083BC 50%, #FAB900 50%, #986F0A 90%);
+    box-shadow: 0px 10px 15px  #dddddd;
 }
 
 .left-section{
@@ -29,12 +30,21 @@ body {
     display: flex;
 }
 
+h2{
+    color: #880000;
+}
+
+.timeChanged{
+    color: #880000;
+    text-decoration: line-through;
+}
+
 .logo-container-left {
 
     overflow: hidden;
     text-align: left;
     margin-right: 7px;
-    margin-left: 3px;
+    padding-left: -5px;
   
 }
 
@@ -43,26 +53,72 @@ body {
     overflow: hidden;
     text-align: right;
     margin-left: 7px;
-    margin-right: 3px;
+    padding-right: -5px;
 }
+
 
 .text-container-left{ 
     color: white;
     display: flex;
     align-items: center;
+
 }
 
 .text-container-right{ 
     color: white;
     display: flex;
     align-items: center;
+   
 }
 
 img{
     max-height: 130px;
 }
 
+@media only screen and (max-width: 375px) {
+    
+    body {
+        font-size: 14px;
+    }
+
+
+img{
+    max-height: 110px;
+}
+ 
+}
+
+
+footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: 50px;
+    text-align: center; 
+    line-height: 50px; 
+    box-shadow: 0px -5px 5px  #dddddd;
+    background-color: white;
+  }
+
 .content {
-    margin-top: 20px; 
+    
     padding: 20px;
+}
+
+/*Tabelle*/
+.schedule {
+    width: 100%;
+    max-width: 450px;
+    margin: 20px auto;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+    border-collapse: collapse;
+}
+
+.time, .eventDes {
+    padding: 10px;
+    border-bottom: 1px dotted #9e9e9e;
+    
 }

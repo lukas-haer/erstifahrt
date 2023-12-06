@@ -1,11 +1,11 @@
 const mongoose = require('mongoose')
 
-const userSchema = new mongoose.Schema({
+const eventSchema = new mongoose.Schema({
     description: String,
     descriptionHighlight: String,
     day: String,
     time: Number,
-    updatedTime: Number,
+    oldTime: Number,
     createdAt: {
         type: String,
         immutable: true,
@@ -16,5 +16,4 @@ const userSchema = new mongoose.Schema({
     }
 })
 
-
-module.exports = mongoose.model("User", userSchema)
+module.exports = mongoose.model("Event", eventSchema)

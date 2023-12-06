@@ -1,43 +1,66 @@
 <!DOCTYPE html>
 <html lang="de">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/css/startseite.css">
+    <link rel="stylesheet" href="/css/test-startseite.css">
     <link href='https://fonts.googleapis.com/css?family=Open Sans' rel='stylesheet'>
     <link rel="icon" href="/img/logo_50x50.png" type="image/png">
     <title>Erstifahrt - FT</title>
 </head>
+
 <body>
-    <div class="title">Häuserspiel - Punktestand</div>
-    <div class="header">
-        <div class="left-section">
+    <header>
+        <div class="title">Häuserspiel - Punktestand</div>
+        <div class="header">
+            <div class="left-section">
 
-            <div class="logo-container-left">
-                <img src="/img/ravenclaw.png" alt="hufflepuff-logo">
+                <div class="logo-container-left">
+                    <img src="/img/ravenclaw.png" alt="hufflepuff-logo">
+                </div>
+                <div class="text-container-left">
+                    <h1>480</h1>
+
+
+                </div>
             </div>
-            <div class="text-container-left">
-                <h1><%= scoreRavenclaw %></h1>
-                    
-                                       
+            <div class="right-section">
+                <div class="text-container-right">
+                    <h1>980</h1>
+                </div>
+                <div class="logo-container-right">
+                    <img src="/img/hufflepuff.png" alt="ravenclaw-logo">
+                </div>
             </div>
         </div>
-        <div class="right-section">
-            <div class="text-container-right">
-                <h1><%= scoreHufflepuff %></h1>
-            </div>
-            <div class="logo-container-right">
-                <img src="/img/hufflepuff.png" alt="ravenclaw-logo" >
-            </div>
+    </header>
+    <main >
+        <div class="content" style="margin-top: 10px; ">
+            <% eventsByDay.forEach(day=> { %>
             
-        
-        </div>
-    </div>
+                <h2><%= day.day %> </h2>
 
-    <div class="content">
-        
-        <a href="/teamer/login">Teamer-Bereich</a>
-      
-    </div>
+                <div class="schedule">
+                <% day.events.forEach(event=> { %>
+                    
+                    <div class="time">
+                        <%= event.time %>
+                        <span style="color: #880000; text-decoration: line-through;"><%= event.oldTime %></span>
+                    </div>
+                    <div class="eventDes">
+                        <mark><%= event.descriptionHighlight %></mark>
+                        <%= event.description %>
+                    </div>
+    
+                    <% }); %>
+                </div>
+                <% }); %>
+        </div>
+    </main>
+    <footer>
+        <a href="/teamer/login">Teamer:innen-Bereich</a>
+    </footer>
 </body>
+
 </html>

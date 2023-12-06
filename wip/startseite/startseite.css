@@ -19,6 +19,7 @@ body {
     justify-content: space-between;
     height: 100px;
     background: linear-gradient(to right, #034371 10%, #0083BC 50%, #FAB900 50%, #986F0A 90%);
+    box-shadow: 0px 10px 15px  #dddddd;
 }
 
 .left-section{
@@ -43,7 +44,7 @@ h2{
     overflow: hidden;
     text-align: left;
     margin-right: 7px;
-    margin-left: -5px;
+    padding-left: -5px;
   
 }
 
@@ -52,24 +53,41 @@ h2{
     overflow: hidden;
     text-align: right;
     margin-left: 7px;
-    margin-right: -5px;
+    padding-right: -5px;
 }
+
 
 .text-container-left{ 
     color: white;
     display: flex;
     align-items: center;
+
 }
 
 .text-container-right{ 
     color: white;
     display: flex;
     align-items: center;
+   
 }
 
 img{
     max-height: 130px;
 }
+
+@media only screen and (max-width: 375px) {
+    
+    body {
+        font-size: 14px;
+    }
+
+
+img{
+    max-height: 110px;
+}
+ 
+}
+
 
 footer {
     position: fixed;

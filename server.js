@@ -13,6 +13,7 @@ const mongoose = require('mongoose')
 const Teamer = require('./schemas/Teamer')
 const ScoreChanges = require('./schemas/ScoreChanges')
 const Strikes = require('./schemas/Strikes')
+const Event = require('./schemas/Event')
 
 
 mongoose.connect(process.env.MDB_CONNECTION)
@@ -278,6 +279,17 @@ app.delete('/teamer/logout', checkAuthenticated, (req, res, next) => {
     });
 });
 
+app.get('/events', async (req, res) => {
+    try {
+        const eventsByDay = await getEventsbyDay();
+        
+        
+        res.render('events.ejs',{eventsByDay})
+      } catch (error) {
+        
+        console.error(error);
+      }
+})
 
 app.get('/404', (req, res) => {
     res.render('404.ejs')
@@ -357,6 +369,53 @@ async function calcHufflePoints() {
         throw error; // Re-throw the error to handle it in the calling function
     }
 }
+
+async function getEventsbyDay() {
+    try {
+      const pipeline = [
+        {
+          $addFields: {
+            weekdayOrder: {
+              $switch: {
+                branches: [
+                  { case: { $eq: ["$day", "Montag"] }, then: 1 },
+                  { case: { $eq: ["$day", "Dienstag"] }, then: 2 },
+                  { case: { $eq: ["$day", "Mittwoch"] }, then: 3 },
+                  { case: { $eq: ["$day", "Donnerstag"] }, then: 4 },
+                  { case: { $eq: ["$day", "Freitag"] }, then: 5 },
+                  { case: { $eq: ["$day", "Samstag"] }, then: 6 },
+                  { case: { $eq: ["$day", "Sonntag"] }, then: 7 },
+                ],
+                default: 0
+              }
+            }
+          }
+        },
+        {
+          $sort: { weekdayOrder: 1, day: 1, wann: 1 } // Sortiere nach Wochentag, Tag und dann nach wann
+        },
+        {
+          $group: {
+            _id: "$day",
+            events: { $push: "$$ROOT" }
+          }
+        },
+        {
+          $project: {
+            _id: 0,
+            day: "$_id",
+            events: 1
+          }
+        }
+      ];
+  
+      const result = await Event.aggregate(pipeline);
+      return result;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  }
 
 //Testing:
 
