@@ -42,12 +42,20 @@ app.use(methodOverride('_method'))
 app.use(express.static(__dirname + '/public'));
 
 app.get('/', async (req, res) => {
- 
+    try {
+        
+      } catch (error) {
+        
+        console.error(error);
+      }
     try {
         const scoreRavenclaw = await calcRavenPoints();
         const scoreHufflepuff = await calcHufflePoints();
-
-        res.render('index.ejs', { scoreRavenclaw, scoreHufflepuff });
+        const eventsByDay = await getEventsbyDay();
+        
+        
+        
+        res.render('index.ejs', { scoreRavenclaw, scoreHufflepuff, eventsByDay });
     } catch (error) {
         console.error(error);
         res.status(500).send("500: Mongoose Error"); // Handle error appropriately, redirect to an error page
@@ -278,18 +286,6 @@ app.delete('/teamer/logout', checkAuthenticated, (req, res, next) => {
         res.redirect('/teamer/login');
     });
 });
-
-app.get('/events', async (req, res) => {
-    try {
-        const eventsByDay = await getEventsbyDay();
-        
-        
-        res.render('events.ejs',{eventsByDay})
-      } catch (error) {
-        
-        console.error(error);
-      }
-})
 
 app.get('/404', (req, res) => {
     res.render('404.ejs')
