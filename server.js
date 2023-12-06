@@ -53,7 +53,9 @@ app.get('/', async (req, res) => {
         const scoreHufflepuff = await calcHufflePoints();
         const eventsByDay = await getEventsbyDay();
         
-        
+        eventsByDay.forEach(e =>{
+            console.log(e);
+        });
         
         res.render('index.ejs', { scoreRavenclaw, scoreHufflepuff, eventsByDay });
     } catch (error) {
@@ -370,40 +372,32 @@ async function getEventsbyDay() {
     try {
       const pipeline = [
         {
-          $addFields: {
-            weekdayOrder: {
-              $switch: {
-                branches: [
-                  { case: { $eq: ["$day", "Montag"] }, then: 1 },
-                  { case: { $eq: ["$day", "Dienstag"] }, then: 2 },
-                  { case: { $eq: ["$day", "Mittwoch"] }, then: 3 },
-                  { case: { $eq: ["$day", "Donnerstag"] }, then: 4 },
-                  { case: { $eq: ["$day", "Freitag"] }, then: 5 },
-                  { case: { $eq: ["$day", "Samstag"] }, then: 6 },
-                  { case: { $eq: ["$day", "Sonntag"] }, then: 7 },
-                ],
-                default: 0
-              }
+            $addFields: {
+                day_nr_numeric: { $toInt: "$day_nr" }  // Konvertiere day_nr in eine Zahl
             }
-          }
         },
         {
-          $sort: { weekdayOrder: 1, day: 1, wann: 1 } // Sortiere nach Wochentag, Tag und dann nach wann
+            $sort: {
+                day_nr_numeric: 1,  // Sortiere nach der numerischen day_nr
+                time: 1
+            },
         },
         {
-          $group: {
-            _id: "$day",
-            events: { $push: "$$ROOT" }
-          }
+            $group: {
+                _id: "$day",  // Gruppiere nach Tag
+                events: {
+                    $push: "$$ROOT"  // Füge alle Felder der Gruppe in das Array 'events' ein
+                }
+            }
         },
         {
-          $project: {
-            _id: 0,
-            day: "$_id",
-            events: 1
-          }
+            $project: {
+                _id: 0, // Ignoriere das Standard-_id-Feld
+                day: "$_id",  // Verwende 'day' anstelle von '_id'
+                events: 1   // Behalte das 'events'-Feld
+            }
         }
-      ];
+    ];
   
       const result = await Event.aggregate(pipeline);
       return result;
