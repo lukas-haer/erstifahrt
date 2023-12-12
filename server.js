@@ -274,11 +274,11 @@ app.post('/teamer/strikes', checkAuthenticated, async (req, res, next) => {
 });
 
 //Events -------------------------
-app.get('/teamer/events', (req,res) => {
+app.get('/teamer/events', checkAuthenticated, (req,res) => {
     res.render('events.ejs')
 });
 
-app.post('/teamer/events', async (req, res) => {
+app.post('/teamer/events', checkAuthenticated, async (req, res) => {
     let dateAndTime = new Date(req.body.date + 'T' + req.body.time);
     const daysOfWeekNames = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'];
     const dayName = daysOfWeekNames[dateAndTime.getDay()]; 
