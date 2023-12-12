@@ -4,9 +4,10 @@ const eventSchema = new mongoose.Schema({
     description: String,
     descriptionHighlight: String,
     day: String,
-    day_nr:Number,
-    time: Number,
-    oldTime: Number,
+    time: String,
+    oldTime: String,
+    link:String,
+    linkText:String,
     createdAt: {
         type: String,
         immutable: true,

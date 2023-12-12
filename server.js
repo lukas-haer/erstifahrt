@@ -42,21 +42,13 @@ app.use(methodOverride('_method'))
 app.use(express.static(__dirname + '/public'));
 
 app.get('/', async (req, res) => {
-    try {
-        
-      } catch (error) {
-        
-        console.error(error);
-      }
+    
     try {
         const scoreRavenclaw = await calcRavenPoints();
         const scoreHufflepuff = await calcHufflePoints();
         const eventsByDay = await getEventsbyDay();
-        
-        eventsByDay.forEach(e =>{
-            console.log(e);
-        });
-        
+
+
         res.render('index.ejs', { scoreRavenclaw, scoreHufflepuff, eventsByDay });
     } catch (error) {
         console.error(error);
@@ -151,11 +143,11 @@ app.delete('/teamer/admin/delete-account', checkAdmin, async (req, res, next) =>
 });
 
 //Strikes löschen
-app.delete('/teamer/admin/delete-strikes', checkAdmin, async (req,res,next) => {
+app.delete('/teamer/admin/delete-strikes', checkAdmin, async (req, res, next) => {
     try {
         // Löscht alle Einträge in der Kollektion
         const loeschErgebnis = await Strikes.deleteMany({});
-        
+
         console.log(`Es wurden ${loeschErgebnis.deletedCount} Einträge gelöscht.`);
     } catch (error) {
         console.error('Fehler beim Löschen der Einträge:', error);
@@ -260,16 +252,16 @@ app.post('/teamer/strikes', checkAuthenticated, async (req, res, next) => {
                 strikeNr: 1,
                 madeBy: req.user.name,
             });
-            
+
             await Strike.save();
-            console.log(Strike)
+            
         } else { //Ersti Strike wird um 1 erhöht
             ersti.strikeNr += 1;
             await ersti.save();
-            console.log("UPDATED: "+ersti)
+            console.log("UPDATED: " + ersti)
         }
 
-        
+
         const strikesData = await Strikes.find({});
         const strikers = strikesData.map(strikes => strikes.toObject());
         res.render('teamer.ejs', { name: req.user.name, strikers: strikers });
@@ -280,6 +272,60 @@ app.post('/teamer/strikes', checkAuthenticated, async (req, res, next) => {
 
     }
 });
+
+//Events -------------------------
+app.get('/teamer/events', (req,res) => {
+    res.render('events.ejs')
+});
+
+app.post('/teamer/events', async (req, res) => {
+    let dateAndTime = new Date(req.body.date + 'T' + req.body.time);
+    const daysOfWeekNames = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'];
+    const dayName = daysOfWeekNames[dateAndTime.getDay()]; 
+    
+    try {
+
+        let event = new Event({
+            description: req.body.description,
+            descriptionHighlight: req.body.descriptionHighlight,
+            date: dateAndTime,
+            day: dayName,
+            time: req.body.time,
+            oldTime: req.body.oldTime,
+            link: req.body.link,
+            linkText: req.body.linkText,
+            madeBy: req.body.name
+        });
+
+        await event.save(); // Verwenden Sie await hier, um auf die Speicherung in der Datenbank zu warten
+        console.log(event);
+
+
+
+        res.status(200).redirect('/');
+
+    } catch (e) {
+        console.error(e);
+        res.status(500).redirect(e);
+
+    }
+
+
+});
+
+//Events löschen
+app.delete('/teamer/admin/delete-events', checkAdmin, async (req, res, next) => {
+    try {
+        // Löscht alle Einträge in der Kollektion
+        const loeschErgebnis = await Event.deleteMany({});
+
+        console.log(`Es wurden ${loeschErgebnis.deletedCount} Einträge gelöscht.`);
+    } catch (error) {
+        console.error('Fehler beim Löschen der Einträge:', error);
+    }
+    res.redirect('/teamer');
+});
+//Ende Events --------------------
 
 //LogOut
 app.delete('/teamer/logout', checkAuthenticated, (req, res, next) => {
@@ -368,44 +414,27 @@ async function calcHufflePoints() {
     }
 }
 
+
 async function getEventsbyDay() {
-    try {
-      const pipeline = [
-        {
-            $addFields: {
-                day_nr_numeric: { $toInt: "$day_nr" }  // Konvertiere day_nr in eine Zahl
-            }
-        },
-        {
-            $sort: {
-                day_nr_numeric: 1,  // Sortiere nach der numerischen day_nr
-                time: 1
-            },
-        },
-        {
-            $group: {
-                _id: "$day",  // Gruppiere nach Tag
-                events: {
-                    $push: "$$ROOT"  // Füge alle Felder der Gruppe in das Array 'events' ein
-                }
-            }
-        },
-        {
-            $project: {
-                _id: 0, // Ignoriere das Standard-_id-Feld
-                day: "$_id",  // Verwende 'day' anstelle von '_id'
-                events: 1   // Behalte das 'events'-Feld
-            }
-        }
-    ];
+    const events = await Event.find();
+    const sortedEvents = {
+      Freitag: [],
+      Samstag: [],
+      Sonntag: []
+    };
   
-      const result = await Event.aggregate(pipeline);
-      return result;
-    } catch (error) {
-      console.error(error);
-      throw error;
-    }
+    events.forEach(event => {
+      const { day } = event;
+      if (sortedEvents.hasOwnProperty(day)) {
+        sortedEvents[day].push(event);
+      } else {
+        console.error(`Ungültiger Tag: ${day}`);
+      }
+    });
+  
+    return sortedEvents;
   }
+  
 
 //Testing:
 

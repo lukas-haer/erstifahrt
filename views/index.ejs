@@ -20,14 +20,18 @@
                     <img src="/img/ravenclaw.png" alt="hufflepuff-logo">
                 </div>
                 <div class="text-container-left">
-                    <h1><%= scoreRavenclaw %></h1>
+                    <h1>
+                        <%= scoreRavenclaw %>
+                    </h1>
 
 
                 </div>
             </div>
             <div class="right-section">
                 <div class="text-container-right">
-                    <h1><%=scoreHufflepuff %></h1>
+                    <h1>
+                        <%=scoreHufflepuff %>
+                    </h1>
                 </div>
                 <div class="logo-container-right">
                     <img src="/img/hufflepuff.png" alt="ravenclaw-logo">
@@ -35,31 +39,123 @@
             </div>
         </div>
     </header>
-    <main >
+    <main>
         <div class="content" style="margin-top: 10px; ">
-            <% eventsByDay.forEach(day=> { %>
-            
-                <h2><%= day.day %> </h2>
 
-                <div class="schedule">
-                <% day.events.forEach(event=> { %>
+            <div class="schedule">
+                <h2>Freitag</h2>
+                <table>
+                    <tbody>
+                <% eventsByDay.Freitag.sort((a, b)=> (a.time || '').localeCompare(b.time || '')).forEach(event => { %>
                     
-                    <div class="time">
-                        <%= event.time %>
-                        <span style="color: #880000; text-decoration: line-through;"><%= event.oldTime %></span>
-                    </div>
-                    <div class="eventDes">
-                        <%= event.description %>
-                        <mark><%= event.descriptionHighlight %></mark>
-                    </div>
-    
-                    <% }); %>
-                </div>
-                <% }); %>
+                            <tr>
+                                <td>
+                                    <%= event.time %>
+                                        <% if (typeof event.oldTime !=='undefined' && event.oldTime !==null && event.oldTime !='') { %>
+                                            <br>
+                                            <span style="color: #880000; text-decoration: line-through;">
+                                                <%= event.oldTime %>
+                                            </span>
+                                            <% } %>
+                                </td>
+                                <td>
+                                    <%= event.description %>
+                                        <% if (typeof event.descriptionHighlight !=='undefined' &&
+                                            event.descriptionHighlight !==null  && event.descriptionHighlight !='') { %>
+                                            <br>
+                                            <mark>
+                                                <%= event.descriptionHighlight %>
+                                            </mark>
+                                            <% } %>
+                                                <% if (typeof event.link !=='undefined' && typeof event.linkText
+                                                    !=='undefined' && event.link !==null && event.linkText !==null  && event.link !=''  && event.linkText !='') { %>
+                                                    <br>
+                                                    <a href=<%=event.link%>><%= event.linkText%></a>
+                                                    <% } %>
+                                </td>
+
+                            </tr>
+                            <% }); %>
+                        </tbody>
+                    </table>
+                    <h2>Samstag</h2>
+                    <table>
+                        <tbody>
+                            <% eventsByDay.Samstag.sort((a, b)=> (a.time || '').localeCompare(b.time ||
+                                '')).forEach(event => { %>
+
+                                <tr>
+                                    <td>
+                                        <%= event.time %>
+                                            <% if (typeof event.oldTime !=='undefined' && event.oldTime !==null && event.oldTime !='') { %>
+                                                <br>
+                                                <span style="color: #880000; text-decoration: line-through;">
+                                                    <%= event.oldTime %>
+                                                </span>
+                                                <% } %>
+                                    </td>
+                                    <td>
+                                        <%= event.description %>
+                                            <% if (typeof event.descriptionHighlight !=='undefined' && event.descriptionHighlight !==null && event.descriptionHighlight != '') { %>
+                                                <br>
+                                                <mark>
+                                                    <%= event.descriptionHighlight %>
+                                                </mark>
+                                                <% } %>
+                                                    <% if (typeof event.link !=='undefined' && typeof event.linkText !=='undefined' && event.link !==null && event.linkText !==null && event.link !='' && event.linkText != '')
+                                                        { %>
+                                                        <br>
+                                                        <a href=<%=event.link%>><%= event.linkText%></a>
+                                                        <% } %>
+                                    </td>
+
+                                </tr>
+                                <% }); %>
+                        </tbody>
+                    </table>
+                    <table>
+                        <tbody>
+                            <h2>Sonntag</h2>
+                            <% eventsByDay.Sonntag.sort((a, b)=> (a.time || '').localeCompare(b.time ||
+                                '')).forEach(event => { %>
+
+                                <tr>
+                                    <td>
+                                        <%= event.time %>
+                                            <% if (typeof event.oldTime !=='undefined' && event.oldTime !==null && event.oldTime !='') { %>
+                                                <br>
+                                                <span style="color: #880000; text-decoration: line-through;">
+                                                    <%= event.oldTime %>
+                                                </span>
+                                                <% } %>
+                                    </td>
+                                    <td>
+                                        <%= event.description %>
+                                            <% if (typeof event.descriptionHighlight !=='undefined' &&
+                                                event.descriptionHighlight !==null && event.descriptionHighlight !='') { %>
+                                                <br>
+                                                <mark>
+                                                    <%= event.descriptionHighlight %>
+                                                </mark>
+                                                <% } %>
+                                                    <% if (typeof event.link !=='undefined' && typeof event.linkText
+                                                        !=='undefined' && event.link !==null && event.linkText !==null  && event.link !=''  && event.linkText !='')
+                                                        { %>
+                                                        <br>
+                                                        <a href=<%=event.link%>><%= event.linkText%></a>
+                                                        <% } %>
+                                    </td>
+                                </tr>
+                                <% }); %>
+                        </tbody>
+
+                    </table>
+            </div>
         </div>
     </main>
     <footer>
         <a href="/teamer/login">Teamer:innen-Bereich</a>
+        <a href="/teamer/events">Events</a>
     </footer>
 </body>
 

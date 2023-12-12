@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/auth-area.css">
+    <link href='https://fonts.googleapis.com/css?family=Open Sans' rel='stylesheet'>
+    <link rel="icon" href="/img/logo_50x50.png" type="image/png">
+    <title>Events | FT</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="content">
+            <h1 style="color: #880000;">Event hinzufügen</h1>
+            <form action="/teamer/events" method="POST">
+
+                <input type="text" id="description" name="description" placeholder="Beschreibung" value="Abfahrt">
+                <input type="text" id="descriptionHighlight" name="descriptionHighlight" placeholder="Highlight">
+            
+                <input type="date" name="date" id="date" value="2024-04-19">
+                <input type="time" name="time" id="time" value="12:00">
+                
+                <input type="text" id="oldTime" name="oldTime" placeholder="alte Uhrzeit">
+                <input type="text" id="link" name="link" placeholder="Link einfügen">
+                <input type="text" id="linkText" name="linkText" placeholder="Link Text">
+
+                <button type="submit">Submit</button>
+
+            </form>
+            <br>
+
+            <div class="basic">
+                <a href="/">Zur Startseite</a><br>
+                <a href="/teamer">Teamer:innen-Bereich</a>
+            </div>
+
+        </div>
+    </div>
+</body>
+
+</html>
