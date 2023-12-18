@@ -41,21 +41,23 @@ app.use(passport.session())
 app.use(methodOverride('_method'))
 app.use(express.static(__dirname + '/public'));
 
+//Startseite
 app.get('/', async (req, res) => {
     
     try {
         const scoreRavenclaw = await calcRavenPoints();
         const scoreHufflepuff = await calcHufflePoints();
-        const eventsByDay = await getEventsbyDay();
+        const eventsByDay = await getEventsbyDay(req);
 
 
-        res.render('index.ejs', { scoreRavenclaw, scoreHufflepuff, eventsByDay });
+        res.render('index.ejs', { scoreRavenclaw, scoreHufflepuff, eventsByDay,  });
     } catch (error) {
         console.error(error);
         res.status(500).send("500: Mongoose Error"); // Handle error appropriately, redirect to an error page
     }
 });
 
+//Teamer-Bereich
 app.get('/teamer/', checkAuthenticated, async (req, res) => {
     let teamername = req.user.name
     const strikesData = await Strikes.find({});
@@ -64,20 +66,24 @@ app.get('/teamer/', checkAuthenticated, async (req, res) => {
     res.render('teamer.ejs', { name: req.user.name, strikers: strikers })
 })
 
+//REDIRECTION auf /teamer/login
 app.get('/login', (req, res) => {
     res.redirect('/teamer/login')
 })
 
+//Loginseite
 app.get('/teamer/login', checkNotAuthenticated, (req, res) => {
     res.render('login.ejs')
 })
 
+//POST Login
 app.post('/teamer/login', checkNotAuthenticated, passport.authenticate('local', {
     successRedirect: '/teamer',
     failureRedirect: '/teamer/login',
     failureFlash: true
 }))
 
+//Admin-Bereich
 app.get('/teamer/admin', checkAdmin, async (req, res) => {
     try {
         const teamerData = await Teamer.find({}); // Abfrage für Teamer-Daten aus der Datenbank
@@ -88,6 +94,7 @@ app.get('/teamer/admin', checkAdmin, async (req, res) => {
     }
 })
 
+//POST Neues Konto
 app.post('/teamer/admin', checkAdmin, async (req, res) => {
     try {
         const hashedpswd = await bcrypt.hash(req.body.password, 10);
@@ -142,20 +149,8 @@ app.delete('/teamer/admin/delete-account', checkAdmin, async (req, res, next) =>
     }
 });
 
-//Strikes löschen
-app.delete('/teamer/admin/delete-strikes', checkAdmin, async (req, res, next) => {
-    try {
-        // Löscht alle Einträge in der Kollektion
-        const loeschErgebnis = await Strikes.deleteMany({});
 
-        console.log(`Es wurden ${loeschErgebnis.deletedCount} Einträge gelöscht.`);
-    } catch (error) {
-        console.error('Fehler beim Löschen der Einträge:', error);
-    }
-    res.redirect('/teamer');
-});
-
-
+//Punkte ------------------------
 //Punkte hinzufügen
 app.post('/teamer/points/', checkAuthenticated, async (req, res) => {
     try {
@@ -223,22 +218,10 @@ app.get('/teamer/points/delete', checkAdmin, async (req, res, next) => {
 
 
 });
+//Ende Punkte --------------------
 
-async function calculateStrike(erstiName) {
-    try {
-        const ersti = await Strikes.findOne({ name: erstiName });
 
-        if (ersti === null) {
-            return 1;
-        } else {
-            return ++ersti.strikeNr
-        }
-    } catch (error) {
-        console.error(error);
-        return false; // Bei einem Fehler wird false zurückgegeben
-    }
-}
-
+//Strikes ------------------------
 //Strikes hinzufügen
 app.post('/teamer/strikes', checkAuthenticated, async (req, res, next) => {
     try {
@@ -273,11 +256,27 @@ app.post('/teamer/strikes', checkAuthenticated, async (req, res, next) => {
     }
 });
 
+//Strikes löschen
+app.delete('/teamer/admin/delete-strikes', checkAdmin, async (req, res, next) => {
+    try {
+        // Löscht alle Einträge in der Kollektion
+        const loeschErgebnis = await Strikes.deleteMany({});
+
+        console.log(`Es wurden ${loeschErgebnis.deletedCount} Einträge gelöscht.`);
+    } catch (error) {
+        console.error('Fehler beim Löschen der Einträge:', error);
+    }
+    res.redirect('/teamer');
+});
+//Ende Strikes -------------------
+
 //Events -------------------------
+//Event erstellen
 app.get('/teamer/events', checkAuthenticated, (req,res) => {
     res.render('events.ejs')
 });
 
+//POST: Event erstellen
 app.post('/teamer/events', checkAuthenticated, async (req, res) => {
     let dateAndTime = new Date(req.body.date + 'T' + req.body.time);
     const daysOfWeekNames = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'];
@@ -300,8 +299,6 @@ app.post('/teamer/events', checkAuthenticated, async (req, res) => {
         await event.save(); // Verwenden Sie await hier, um auf die Speicherung in der Datenbank zu warten
         console.log(event);
 
-
-
         res.status(200).redirect('/');
 
     } catch (e) {
@@ -313,7 +310,65 @@ app.post('/teamer/events', checkAuthenticated, async (req, res) => {
 
 });
 
-//Events löschen
+//Events-Bearbeiten-SEITE
+app.get('/teamer/events/edit', checkAuthenticated, async (req, res) => {
+    try {
+        const eventID = req.query.id;
+        const event = await Event.findOne({ _id: eventID });
+
+        res.render('events-update.ejs', { event });
+    } catch (error) {
+        console.error('Error fetching event:', error);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
+//POST: Events updaten 
+app.post('/teamer/events/edit', checkAuthenticated, async (req, res) => {
+    try {
+        
+        const eventID = req.body.EventID;
+        let event = await Event.findOne({ _id: eventID });
+        
+        
+        event.description = req.body.description,
+        event.descriptionHighlight = req.body.descriptionHighlight,
+        event.day = req.body.day,
+        event.time = req.body.time,
+        event.oldTime = req.body.oldTime,
+        event.link = req.body.link,
+        event.linkText = req.body.linkText,
+        event.madeBy = req.body.name
+        
+        await event.save();
+            console.log("UPDATED: " + event)
+
+        
+        res.redirect('/');
+    } catch (error) {
+        console.error('Error fetching event:', error);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
+//Ein Event löschen
+app.delete('/teamer/events', checkAuthenticated, async (req, res, next) => {
+    try {
+        const EventID = req.body.EventID;
+    
+        await Event.deleteOne({ _id: EventID });
+        console.log("Deleted Event")
+        res.redirect('/')
+
+    } catch (error) {
+        console.error('Fehler beim Löschen der Einträge:', error);
+        res.redirect('/');
+    }
+    
+});
+
+
+//ALLE Events löschen
 app.delete('/teamer/admin/delete-events', checkAdmin, async (req, res, next) => {
     try {
         // Löscht alle Einträge in der Kollektion
@@ -335,21 +390,16 @@ app.delete('/teamer/logout', checkAuthenticated, (req, res, next) => {
     });
 });
 
-app.get('/404', (req, res) => {
-    res.render('404.ejs')
-})
-
 app.get('/500', (req, res) => {
     res.send("Error 500")
 })
 
 //404 Page
-
 app.get('*', (req, res) => {
-    res.status(404).redirect('/404')
+    res.render('404.ejs')
 })
 
-
+//Funktionen --------------------
 
 function checkAuthenticated(req, res, next) {
     if (req.isAuthenticated()) {
@@ -387,7 +437,6 @@ async function isUsernameTaken(username) {
     }
 }
 
-
 async function calcRavenPoints() {
     try {
         // Ravenclaw Punktestand
@@ -414,9 +463,16 @@ async function calcHufflePoints() {
     }
 }
 
+async function getEventsbyDay(req) {
+    let events;
+    if (req.isAuthenticated()) {
+        events = await Event.find()
+    } else {
+        events = await Event.find({}, { _id: 0 });
+    }
 
-async function getEventsbyDay() {
-    const events = await Event.find();
+    
+
     const sortedEvents = {
       Freitag: [],
       Samstag: [],

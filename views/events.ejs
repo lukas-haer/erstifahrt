@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/css/auth-area.css">
+    <link rel="stylesheet" href="/css/event-style.css">
     <link href='https://fonts.googleapis.com/css?family=Open Sans' rel='stylesheet'>
     <link rel="icon" href="/img/logo_50x50.png" type="image/png">
     <title>Events | FT</title>
@@ -16,28 +16,46 @@
             <h1 style="color: #880000;">Event hinzufügen</h1>
             <form action="/teamer/events" method="POST">
 
-                <input type="text" id="description" name="description" placeholder="Beschreibung" value="Abfahrt">
-                <input type="text" id="descriptionHighlight" name="descriptionHighlight" placeholder="Highlight">
+                <label for="description">Beschreibung</label>
+                <input type="text" id="description" name="description" >
+
+                <label for="descriptionHighlight">Text mit Highlight</label>
+                <input type="text" id="descriptionHighlight" name="descriptionHighlight">
             
-                <input type="date" name="date" id="date" value="2024-04-19">
-                <input type="time" name="time" id="time" value="12:00">
+                <label for="date">Datum </label>
+                <br>
+                <input type="date" name="date" id="date">
+                <br>
                 
-                <input type="text" id="oldTime" name="oldTime" placeholder="alte Uhrzeit">
-                <input type="text" id="link" name="link" placeholder="Link einfügen">
+                <label for="time">Uhrzeit </label>
+                <br>
+                <input type="time" name="time" id="time">
+                
+                <br>
+                <label for="oldTime">Alte Uhrzeit</label>
+                <input type="text" id="oldTime" name="oldTime" >
+
+                <label for="link">Link (mit https://...)</label>
+                <input type="text" id="link" name="link" >
+
+                <label for="linkText">Link-Text</label>
                 <input type="text" id="linkText" name="linkText" placeholder="Link Text">
 
-                <button type="submit">Submit</button>
+                <button type="submit">Event erstellen</button>
 
             </form>
             <br>
 
             <div class="basic">
-                <a href="/">Zur Startseite</a><br>
-                <a href="/teamer">Teamer:innen-Bereich</a>
+                
             </div>
-
+            
         </div>
     </div>
+    <footer>
+        <a href="/">Zur Startseite &#8594</a>
+        <a href="/teamer">Teamer:innen-Bereich</a>
+    </footer>
 </body>
 
 </html>
