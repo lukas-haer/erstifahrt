@@ -15,7 +15,9 @@
             <div class="content">
                 <h1> Hi <%= name %>
                 </h1>
-                
+                <form action="/teamer/logout?_method=DELETE" method="POST">
+                    <button type="submit">Log Out</button>
+                </form>
                 <br>
 
                 <a href="/">Startseite</a>
