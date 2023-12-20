@@ -390,6 +390,12 @@ app.delete('/teamer/logout', checkAuthenticated, (req, res, next) => {
     });
 });
 
+//O-Tage stuff -------------------
+//Programm seite
+app.get('/otage/programm',(req,res) =>{
+    res.render('programm-otage.ejs');
+})
+
 app.get('/500', (req, res) => {
     res.send("Error 500")
 })
@@ -484,7 +490,9 @@ async function getEventsbyDay(req) {
       if (sortedEvents.hasOwnProperty(day)) {
         sortedEvents[day].push(event);
       } else {
+        if (day !== undefined){
         console.error(`Ungültiger Tag: ${day}`);
+    }
       }
     });
   
